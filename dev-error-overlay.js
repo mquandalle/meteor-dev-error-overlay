@@ -1,6 +1,7 @@
 const errorState = new ReactiveVar(false);
 
 let overlay = null;
+let notification = null;
 
 const loadedConfig = loadConfig();
 
@@ -78,7 +79,9 @@ function alertError() {
         Settings stored in localStorage.
       </div>
       ${maybeSound}
-      <iframe src="/"></iframe>
+      <div class="simple-dev-error-iframe-wrapper">
+        <iframe src="/"></iframe>
+      </div>
     </div>
   `
 
@@ -102,15 +105,29 @@ function alertError() {
 }
 
 function hideError() {
-  if (! overlay) { return; }
-  document.body.removeChild(overlay);
-  overlay = null;
+  if (overlay) {
+    document.body.removeChild(overlay);
+    overlay = null;
+  }
+
+  if (notification) {
+    notification.close();
+    notification = null;
+  }
 }
 
 // Mostly lifted from https://developer.mozilla.org/en-US/docs/Web/API/notification
 function notifyError(message) {
+  if (notification) {
+    // Already displaying a notification
+    return;
+  }
+
   const options = {
-    body: 'From simple:dev-error-overlay'
+    body: 'From simple:dev-error-overlay',
+
+    // Prevents notification from showing twice for the same app if you have multiple tabs open
+    tag: window.location.host + 'simple:dev-error-overlay'
   };
 
   // Let's check if the browser supports notifications
@@ -121,7 +138,7 @@ function notifyError(message) {
   // Let's check whether notification permissions have already been granted
   else if (Notification.permission === "granted") {
     // If it's okay let's create a notification
-    const notification = new Notification(message, options);
+    notification = new Notification(message, options);
   }
 
   // Otherwise, we need to ask the user for permission
@@ -129,7 +146,7 @@ function notifyError(message) {
     Notification.requestPermission(function (permission) {
       // If the user accepts, let's create a notification
       if (permission === "granted") {
-        const notification = new Notification(message, options);
+        notification = new Notification(message, options);
       }
     });
   }
