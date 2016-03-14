@@ -2,6 +2,8 @@
 
 Display a nice overlay in your browser when your Meteor app has a server-side build error. You can also optionally display a desktop notification or play a sound!
 
+This package is `debugOnly`, meaning it won't be included in the production build of your app.
+
 ![Screenshot](screenshot.png)
 
 ### Future improvements to make:
