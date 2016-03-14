@@ -11,14 +11,19 @@ Package.describe({
 });
 
 Package.onUse(function(api) {
-  api.versionsFrom('1.2.1');
-  api.use('ecmascript');
-  api.addFiles('dev-error-overlay.js');
-});
+  api.versionsFrom('1.2');
 
-Package.onTest(function(api) {
-  api.use('ecmascript');
-  api.use('tinytest');
-  api.use('simple:dev-error-overlay');
-  api.addFiles('dev-error-overlay-tests.js');
+  api.use([
+    'ecmascript',
+    'http',
+    'reactive-var',
+    'tracker',
+    'less',
+    'meteor'
+  ]);
+
+  api.addFiles([
+    'dev-error-overlay.js',
+    'dev-error-overlay.less'
+  ], 'client');
 });
