@@ -1,6 +1,6 @@
 Package.describe({
   name: 'simple:dev-error-overlay',
-  version: '1.0.1',
+  version: '1.1.0',
   summary: 'Alerts you when you have a build error.',
   git: 'https://github.com/stubailo/meteor-dev-error-overlay',
   documentation: 'README.md',
