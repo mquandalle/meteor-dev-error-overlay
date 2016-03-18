@@ -15,4 +15,3 @@ I don't plan to make significant improvements to this package. If you're passion
 ### Future improvements to make:
 
 1. Improve Meteor command line tool to avoid rebuilding three times - because of this, this package takes very long to realize there is an error.
-2. Improve sound playing functionality to not use a sketchy YouTube embed.
