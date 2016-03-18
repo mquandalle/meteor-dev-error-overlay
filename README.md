@@ -8,7 +8,7 @@ meteor add simple:dev-error-overlay
 
 This package is `debugOnly`, meaning it won't be included in the production build of your app.
 
-![Screenshot](screenshot.png)
+![Screenshot](assets/screenshot.png)
 
 I don't plan to make significant improvements to this package. If you're passionate about it, I'd love to give you commit access so that we can improve it together!
 
