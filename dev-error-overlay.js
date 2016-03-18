@@ -5,6 +5,9 @@ let notification = null;
 
 const loadedConfig = loadConfig();
 
+const soundURL = '/packages/simple_dev-error-overlay/assets/pup_alert.mp3';
+const alertSound = new Audio(soundURL);
+
 // Poll the server for error
 setInterval(checkErrorState, 500);
 
@@ -47,20 +50,12 @@ function alertError() {
     notifyError('Build error in your app!');
   }
 
+  if (loadedConfig.playSound) {
+    alertSound.play();
+  }
+
   overlay = document.createElement('div');
   overlay.className = 'simple-dev-error-overlay';
-
-  // We play a honking sound from an embedded YouTube video. I'd love to accept a PR to do this in
-  // a much better way!
-  let maybeSound = '';
-  if (loadedConfig.playSound) {
-    maybeSound = `<iframe
-      width="0"
-      height="0"
-      src="https://www.youtube.com/embed/2V753xY96Yg?autoplay=1"
-      frameborder="0"
-    ></iframe>`;
-  }
 
   // Templating! woo. reduce dependencies by not using React, Blaze, or Angular
   overlay.innerHTML = `
@@ -78,7 +73,6 @@ function alertError() {
         &nbsp;|&nbsp;
         Settings stored in localStorage.
       </div>
-      ${maybeSound}
       <div class="simple-dev-error-iframe-wrapper">
         <iframe src="/"></iframe>
       </div>

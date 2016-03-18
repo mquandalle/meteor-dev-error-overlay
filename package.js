@@ -23,4 +23,8 @@ Package.onUse(function(api) {
     'dev-error-overlay.js',
     'dev-error-overlay.less'
   ], 'client');
+
+  api.addAssets([
+    'assets/pup_alert.mp3'
+  ], 'client');
 });
