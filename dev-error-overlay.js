@@ -92,8 +92,15 @@ function alertError() {
     }
 
     checkbox.onchange = () => {
+      // Edit the config
       loadedConfig[configKey] = checkbox.checked;
       setConfig(loadedConfig);
+
+      // If the sound notification was checked, play the sound as a discovery
+      // mechanism.
+      if (configKey === 'playSound' && checkbox.checked) {
+        alertSound.play();
+      }
     }
   });
 }
