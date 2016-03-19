@@ -11,6 +11,15 @@ const alertSound = new Audio(soundURL);
 // Poll the server for error
 setInterval(checkErrorState, 500);
 
+// In development mode a DDP/Websocket disconnection is likely a sign of a
+// broken server. In this case we re-check the error state immediately instead
+// of waiting on average 250ms (worst case 500ms).
+Tracker.autorun(() => {
+  if (! Meteor.status().connected) {
+    checkErrorState();
+  }
+});
+
 Tracker.autorun(() => {
   const isErrorState = errorState.get();
 
