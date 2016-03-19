@@ -63,13 +63,15 @@ function alertError() {
       <div class="simple-dev-error-controls">
         <strong>simple:dev-error-overlay</strong>
         &nbsp;|&nbsp;
-        <input type="checkbox" id="simple-dev-error-play-sound" data-config="playSound">
-          <label>Play sound</label>
-        </input>
+        <label>
+          <input type="checkbox" id="simple-dev-error-play-sound" data-config="playSound" />
+          Play sound
+        </label>
         &nbsp;
-        <input type="checkbox" id="simple-dev-error-show-notif" data-config="showNotif">
-          <label>Show notification</label>
-        </input>
+        <label>
+          <input type="checkbox" id="simple-dev-error-show-notif" data-config="showNotif" />
+          Show notification
+        </label>
         &nbsp;|&nbsp;
         Settings stored in localStorage.
       </div>
@@ -77,7 +79,7 @@ function alertError() {
         <iframe src="/"></iframe>
       </div>
     </div>
-  `
+  `;
 
   document.body.appendChild(overlay);
 
