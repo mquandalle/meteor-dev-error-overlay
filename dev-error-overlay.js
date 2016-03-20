@@ -23,9 +23,14 @@ Tracker.autorun(() => {
 
 function checkErrorState() {
   HTTP.get('/', (err, res) => {
+    // In case of a server disconnection we refresh the overlay but don't run
+    // the alert -- to avoid ringing the alert every 500ms.
     if (err) {
-      // Clearly something is wrong if we can't even reach the server?
-      startErrorReport('');
+      if (!overlay) {
+        startErrorReport();
+      } else {
+        refreshErrorReport();
+      }
       return;
     }
 
@@ -33,8 +38,10 @@ function checkErrorState() {
 
     if (!overlay && !isMeteorApp) {
       startErrorReport();
+      runAlerts();
     } else if (overlay && !isMeteorApp && errorPage !== res.content) {
       refreshErrorReport();
+      runAlerts();
     } else if (overlay && isMeteorApp) {
       stopErrorReport();
     }
@@ -42,9 +49,7 @@ function checkErrorState() {
   });
 }
 
-function startErrorReport(errorPage) {
-  runAlerts();
-
+function startErrorReport() {
   overlay = document.createElement('div');
   overlay.className = 'simple-dev-error-overlay';
 
@@ -99,10 +104,8 @@ function startErrorReport(errorPage) {
 }
 
 // If we are already reporting an error in the overlay, and we have detected
-// a new error on the server, we need to re-run the notifications and refresh
-// the iframe.
+// a new error on the server, we need refresh the iframe.
 function refreshErrorReport() {
-  runAlerts();
   const iframe = document.getElementById('simple-dev-error-iframe');;
   iframe.src = iframe.src;
 }
