@@ -6,7 +6,7 @@ let notification = null;
 let errorPage = null;
 
 const loadedConfig = loadConfig();
-const soundURL = '/packages/simple_dev-error-overlay/assets/pup_alert.mp3';
+const soundURL = '/packages/simple_dev-error-overlay/assets/negative_beeps.mp3';
 const alertSound = new Audio(soundURL);
 
 // Poll the server for error

@@ -24,6 +24,6 @@ Package.onUse(function(api) {
   ], 'client');
 
   api.addAssets([
-    'assets/pup_alert.mp3'
+    'assets/negative_beeps.mp3'
   ], 'client');
 });
