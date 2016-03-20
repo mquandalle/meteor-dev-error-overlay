@@ -13,7 +13,6 @@ Package.onUse(function(api) {
   api.use([
     'ecmascript',
     'http',
-    'reactive-var',
     'tracker',
     'less',
     'meteor'
