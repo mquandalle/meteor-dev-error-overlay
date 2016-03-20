@@ -1,10 +1,11 @@
-const errorState = new ReactiveVar(false);
-
+// The overlay DOM element
 let overlay = null;
+// The HTML5 notification object
 let notification = null;
+// The content of the overlay iframe
+let errorPage = null;
 
 const loadedConfig = loadConfig();
-
 const soundURL = '/packages/simple_dev-error-overlay/assets/pup_alert.mp3';
 const alertSound = new Audio(soundURL);
 
@@ -20,48 +21,29 @@ Tracker.autorun(() => {
   }
 });
 
-Tracker.autorun(() => {
-  const isErrorState = errorState.get();
-
-  if (isErrorState) {
-    alertError();
-  } else {
-    hideError();
-  }
-});
-
 function checkErrorState() {
   HTTP.get('/', (err, res) => {
     if (err) {
       // Clearly something is wrong if we can't even reach the server?
-      errorState.set(true);
+      startErrorReport('');
       return;
     }
 
     const isMeteorApp = res.content.indexOf('__meteor_runtime_config__') !== -1;
 
-    if (! isMeteorApp) {
-      errorState.set(true);
-    } else {
-      errorState.set(false);
-      Meteor.reconnect();
+    if (!overlay && !isMeteorApp) {
+      startErrorReport();
+    } else if (overlay && !isMeteorApp && errorPage !== res.content) {
+      refreshErrorReport();
+    } else if (overlay && isMeteorApp) {
+      stopErrorReport();
     }
+    errorPage = res.content;
   });
 }
 
-function alertError() {
-  if (overlay) {
-    // We are already in the error state, since the error overlay is already on the screen.
-    return;
-  }
-
-  if (loadedConfig.showNotif) {
-    notifyError('Build error in your app!');
-  }
-
-  if (loadedConfig.playSound) {
-    alertSound.play();
-  }
+function startErrorReport(errorPage) {
+  runAlerts();
 
   overlay = document.createElement('div');
   overlay.className = 'simple-dev-error-overlay';
@@ -85,7 +67,7 @@ function alertError() {
         Settings stored in localStorage.
       </div>
       <div class="simple-dev-error-iframe-wrapper">
-        <iframe src="/"></iframe>
+        <iframe src="/" id="simple-dev-error-iframe"></iframe>
       </div>
     </div>
   `;
@@ -107,7 +89,7 @@ function alertError() {
       loadedConfig[configKey] = checkbox.checked;
       setConfig(loadedConfig);
 
-      // If the sound notification was checked, play the sound as a discovery
+      // If the sound notification was activated, play the sound as a discovery
       // mechanism.
       if (configKey === 'playSound' && checkbox.checked) {
         alertSound.play();
@@ -116,15 +98,36 @@ function alertError() {
   });
 }
 
-function hideError() {
+// If we are already reporting an error in the overlay, and we have detected
+// a new error on the server, we need to re-run the notifications and refresh
+// the iframe.
+function refreshErrorReport() {
+  runAlerts();
+  const iframe = document.getElementById('simple-dev-error-iframe');;
+  iframe.src = iframe.src;
+}
+
+function stopErrorReport() {
   if (overlay) {
     document.body.removeChild(overlay);
     overlay = null;
+    errorPage = null;
+    Meteor.reconnect();
   }
 
   if (notification) {
     notification.close();
     notification = null;
+  }
+}
+
+function runAlerts() {
+  if (loadedConfig.showNotif) {
+    notifyError('Build error in your app!');
+  }
+
+  if (loadedConfig.playSound) {
+    alertSound.play();
   }
 }
 

@@ -1,3 +1,7 @@
+## v1.3.0
+
+* Refresh the report when a new error is preventing the restart #8
+
 ## v1.2.0
 
 * Play the sound on checkbox check as a discovery mechanism #5
