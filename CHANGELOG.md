@@ -1,7 +1,12 @@
+## vNext
+
+* Focus the window on notification click [#10](https://github.com/stubailo/meteor-dev-error-overlay/pulls/10)
+
 ## v1.3.0
 
-* Refresh the report when a new error is preventing the restart [#9](https://github.com/stubailo/meteor-dev-error-overlay/pulls/3)
-* Better handling of server disconnection [#8](https://github.com/stubailo/meteor-dev-error-overlay/pulls/3)
+* Refresh the report when a new error is preventing the restart [#8](https://github.com/stubailo/meteor-dev-error-overlay/pulls/8)
+* Better handling of server disconnection [#8](https://github.com/stubailo/meteor-dev-error-overlay/pulls/8)
+* New alert sound [#9](https://github.com/stubailo/meteor-dev-error-overlay/pulls/9)
 
 Special thanks to [@mquandalle](https://github.com/mquandalle) for this release!
 
