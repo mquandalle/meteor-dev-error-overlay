@@ -1,3 +1,7 @@
+## vNext
+
+* Focus the window on notification click [#10](https://github.com/stubailo/meteor-dev-error-overlay/pulls/10)
+
 ## v1.3.0
 
 * Refresh the report when a new error is preventing the restart [#8](https://github.com/stubailo/meteor-dev-error-overlay/pulls/8)

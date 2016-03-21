@@ -141,12 +141,21 @@ function notifyError(message) {
     return;
   }
 
-  const options = {
-    body: 'From simple:dev-error-overlay',
+  const createNotification = () => {
+    const options = {
+      body: 'From simple:dev-error-overlay',
 
-    // Prevents notification from showing twice for the same app if you have multiple tabs open
-    tag: window.location.host + 'simple:dev-error-overlay'
+      // Prevents notification from showing twice for the same app if you have
+      // multiple tabs open
+      tag: window.location.host + 'simple:dev-error-overlay'
+    };
+
+    notification = new Notification(message, options);
+    notification.onclick = () => {
+      window.focus();
+    };
   };
+
 
   // Let's check if the browser supports notifications
   if (!("Notification" in window)) {
@@ -156,7 +165,7 @@ function notifyError(message) {
   // Let's check whether notification permissions have already been granted
   else if (Notification.permission === "granted") {
     // If it's okay let's create a notification
-    notification = new Notification(message, options);
+    createNotification();
   }
 
   // Otherwise, we need to ask the user for permission
@@ -164,7 +173,7 @@ function notifyError(message) {
     Notification.requestPermission(function (permission) {
       // If the user accepts, let's create a notification
       if (permission === "granted") {
-        notification = new Notification(message, options);
+        createNotification();
       }
     });
   }
