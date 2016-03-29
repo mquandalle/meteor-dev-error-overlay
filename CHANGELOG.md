@@ -1,5 +1,7 @@
 ### vNext
 
+* Don’t run the alerts when the server is stopped
+
 ### v1.4.0
 
 * Focus the window on notification click [#10](https://github.com/stubailo/meteor-dev-error-overlay/pulls/10)

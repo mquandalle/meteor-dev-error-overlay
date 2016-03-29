@@ -23,14 +23,12 @@ Tracker.autorun(() => {
 
 function checkErrorState() {
   HTTP.get('/', (err, res) => {
-    // In case of a server disconnection we refresh the overlay but don't run
-    // the alert -- to avoid ringing the alert every 500ms.
+    // Don't ring the alert in case of a server disconnection. We only want to
+    // alert the developer in case there is a server-side exception breaking the
+    // app. If the server is not responding we assume that the developer stopped
+    // it on purpose (for instance to test offline mode) and we won't do
+    // anything.
     if (err) {
-      if (!overlay) {
-        startErrorReport();
-      } else {
-        refreshErrorReport();
-      }
       return;
     }
 
