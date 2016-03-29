@@ -4,20 +4,22 @@ let overlay = null;
 let notification = null;
 // The content of the overlay iframe
 let errorPage = null;
+// A reference to the `setInterval` handler
+let checkErrorInterval = null;
 
 const loadedConfig = loadConfig();
 const soundURL = '/packages/simple_dev-error-overlay/assets/negative_beeps.mp3';
 const alertSound = new Audio(soundURL);
 
-// Poll the server for error
-setInterval(checkErrorState, 500);
-
-// In development mode a DDP/Websocket disconnection is likely a sign of a
-// broken server. In this case we re-check the error state immediately instead
-// of waiting on average 250ms (worst case 500ms).
+// In development mode a DDP/Websocket disconnection is a sign of a broken
+// server. We start pulling the server for errors at a regular interval.
 Tracker.autorun(() => {
   if (! Meteor.status().connected) {
+    // Pull the server for errors
     checkErrorState();
+    checkErrorInterval = setInterval(checkErrorState, 200);
+  } else {
+    checkErrorInterval && clearInterval(checkErrorInterval);
   }
 });
 
